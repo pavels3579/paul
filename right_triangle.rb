@@ -9,7 +9,7 @@ right_triangle = false
 
 if first > second && first > third && first == second + third
   right_triangle = true
-elsif second > first && second > third && second == first + third \
+elsif second > first && second > third && second == first + third
  right_triangle = true
 elsif third > first && third > second && third == first + second
   right_triangle = true
