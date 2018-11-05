@@ -1,27 +1,26 @@
 #quadratic_equation
 puts "Введите коэффициент a"
-a = gets.chomp
+a = gets.to_f
 puts "Введите коэффициент b"
-b = gets.chomp
+b = gets.to_f
 puts "Введите коэффициент c"
-c = gets.chomp
+c = gets.to_f
 
-discriminant = b.to_i**2 - 4*a.to_i*c.to_i
+discriminant = b ** 2 - 4 * a * c
 
 if discriminant > 0
-	x1 = (-b.to_i + Math.sqrt(discriminant))/2*a.to_i
-	x2 = (-b.to_i - Math.sqrt(discriminant))/2*a.to_i
-	puts "Значение дискриминанта равно #{discriminant.to_s}"
-	puts "Первый корень равен #{x1.to_s}"
-	puts "Второй корень равен #{x2.to_s}"
-elsif discriminant == 0
-	x1 = (-b.to_i)/2*a.to_i	
-	puts "Значение дискриминанта равно #{discriminant.to_s}"
-	puts "Корень равен #{x1.to_s}"
-else
-	puts "Значение дискриминанта равно #{discriminant.to_s}"
-	puts "Корней нет"
-end
-	
+  radical = Math.sqrt(discriminant)
 
-	
+  x1 = (-b + radical) / (2 * a)
+  x2 = (-b - radical) / (2 * a)
+  puts "Значение дискриминанта равно #{discriminant}"
+  puts "Первый корень равен #{x1}"
+  puts "Второй корень равен #{x2}"
+elsif discriminant == 0
+  x1 = (-b) / (2 * a)
+  puts "Значение дискриминанта равно #{discriminant}"
+  puts "Корень равен #{x1}"
+else
+  puts "Значение дискриминанта равно #{discriminant}"
+  puts "Корней нет"
+end

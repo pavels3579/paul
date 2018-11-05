@@ -1,8 +1,8 @@
 puts "Как Вас зовут?"
-name = gets.chomp
+name = gets.chomp.capitalize
 puts "Какой у Вас рост?"
-height = gets.chomp
-weight = height.to_i - 110
+height = gets.chomp.to_i
+weight = height - 110
 if weight >= 0 
 	puts "#{name}, Ваш идеальный вес #{weight} кг"
 else
