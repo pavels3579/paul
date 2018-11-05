@@ -1,5 +1,5 @@
 puts "Введите основание треугольника"
-base = gets.chomp
+base = gets.to_f
 puts "Введите высоту треугольника"
-height = gets.chomp
-puts "Площадь треугольника равна #{0.5*base.to_i*height.to_i}"
+height = gets.to_f
+puts "Площадь треугольника равна #{base / 2 * height}"
