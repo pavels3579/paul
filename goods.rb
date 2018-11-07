@@ -1,4 +1,5 @@
-goods = Hash.new
+goods = {}
+
 
 loop do 
   puts "Введите название тавара (стоп - прекратить ввод)"
@@ -7,20 +8,20 @@ loop do
   break if good_name == "стоп"
 
   puts "Введите цену за единицу"
-  good_price = gets.to_sym
+  good_price = gets.to_f
 
   puts "Введите количество купленного тавара"
   good_count = gets.to_f
 
   if goods[good_name.to_sym].nil? 
-    good_values = Hash.new
-    good_values[good_price] = good_count
+    good_values = {}    
 
+    good_values[:price] = good_price
+    good_values[:quentity] = good_count
     goods[good_name.to_sym] = good_values
-  elsif goods[good_name.to_sym][good_price].nil?
-    goods[good_name.to_sym][good_price] = good_count
+  
   else
-    goods[good_name.to_sym][good_price] = goods[good_name.to_sym][good_price] + good_count
+    goods[good_name.to_sym][:quentity] = goods[good_name.to_sym][:quentity] + good_count
   end
 end
 
@@ -28,13 +29,13 @@ puts goods
 
 sum = 0
 goods.each do |good_name, good_value|
-  puts "+++ Товар #{good_name.to_s}"
-
-  good_sum = 0
-  goods[good_name].each do |price, count|
-    puts "Цена: #{price.to_s} Количество:#{count}"
-    good_sum += price.to_s.to_f * count    
-  end
+  puts "+++ Товар #{good_name}"
+  
+  price = goods[good_name][:price] 
+  count = goods[good_name][:quentity] 
+  puts "Цена: #{price} Количество:#{count}"
+  good_sum = price * count    
+  
   puts "--- Общая сумма за товар #{good_sum}"
   sum += good_sum
 end

@@ -1,16 +1,11 @@
-letters = ('a'..'z').to_a
+vowels = %w(a e i o u y)
 
-vowels = ['a', 'e', 'i', 'o', 'u', 'y']
+my_hash = {}
 
-my_hash = Hash.new
-
-index = 0
-while index < letters.size do
-	if vowels.include?(letters[index])
-		my_hash[(letters[index]).to_sym] = index + 1		
-	end
-
-	index += 1
+('a'..'z').each.with_index(1) do |letter, index|
+	if vowels.include?(letter)
+		my_hash[letter.to_sym] = index	
+	end	
 end
 
 puts my_hash
