@@ -17,11 +17,11 @@ loop do
     good_values = {}    
 
     good_values[:price] = good_price
-    good_values[:quentity] = good_count
+    good_values[:quantity] = good_count
     goods[good_name.to_sym] = good_values
   
   else
-    goods[good_name.to_sym][:quentity] = goods[good_name.to_sym][:quentity] + good_count
+    goods[good_name.to_sym][:quantity] = goods[good_name.to_sym][:quantity] + good_count
   end
 end
 
@@ -32,7 +32,7 @@ goods.each do |good_name, good_value|
   puts "+++ Товар #{good_name}"
   
   price = goods[good_name][:price] 
-  count = goods[good_name][:quentity] 
+  count = goods[good_name][:quantity] 
   puts "Цена: #{price} Количество:#{count}"
   good_sum = price * count    
   

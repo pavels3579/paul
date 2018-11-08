@@ -17,6 +17,6 @@ months.each.with_index(1) do |days, index|
 end
 
 leap_year = my_year % 400 == 0 || (my_year % 4 == 0 && my_year % 4 != 0)
-date_number += 1 if leap_year & (my_month >= 3)
+date_number += 1 if leap_year && (my_month >= 3)
 
 puts "Порядковый номер даты с начала года #{date_number}"
