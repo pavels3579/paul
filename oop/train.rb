@@ -1,20 +1,17 @@
 
-class Train  
-  attr_accessor :route, :forward
-  attr_reader : :speed_current, :carriage_count, :station_current
- 
-  def initialize(type, carriage_count)
+class Train
+  attr_reader :speed_current, :number, :carriage_count, :station_current, :route
+
+  def initialize(number, type, carriage_count)
+    @number = number
     @type = type
     @carriage_count = carriage_count
-    @speed_current = 0          
-    @station_current   
-    @route
-    @forward = true
+    @speed_current = 0
   end
 
   def speed_up(speed)
     @speed_current += speed
-  end   
+  end
 
   def speed_down(speed)
     @speed_current -= speed
@@ -22,61 +19,47 @@ class Train
   end
 
   def carriage_add
-    @carriage_count += 1 if @speed_current == 0       
+    @carriage_count += 1 if @speed_current == 0
   end
 
   def carriage_delete
     @carriage_count -= 1 if @speed_current == 0
-    @carriage_count > 0 ? @carriage_count : 0    
+    @carriage_count > 0 ? @carriage_count : 0
   end
- 
-  def train_forward  
+
+  def forward
+    return if @station_current == @route.size - 1
     if @station_current.nil?
       @station_current = 0
-    elsif @station_current == @route.size - 1    
-
     else
-        @station_current += 1
-      end
+      @station_current += 1
     end
   end
 
-  def train_backward  
+  def backward
+    return if @station_current == 0
     if @station_current.nil?
-      @station_current = @route.size - 1 
-    elsif @station_current == 0      
-
-    else 
-      @station_current -=1      
-    end
-  end
-
-  def train_move
-    if @forward 
-      train_forward
+      @station_current = @route.size - 1
     else
-      train_backward
+      @station_current -=1
     end
   end
 
-  def station_now
-    @stations[@station_current]
+  def set_route(route)
+    @route = route
+    @station_current = 0
   end
 
-  def station_before
-    if @forward 
-      return @station_current - 1 >= 0 ? station_current - 1 : @station_current
-    else
-      return @station_current + 1 <= @stations.size - 1 ? station_current + 1 : @station_current
-    end
+  def current_station
+    @route[@station_current]
   end
 
-  def station_next
-    if @forward 
-      return @station_current + 1 <= @stations.size - 1 ? station_current + 1 : @station_current
-    else
-      return @station_current - 1 >= 0 ? station_current - 1 : @station_current
-    end
-  end 
-  
+  def prev_station
+    @station_current - 1 >= 0 ? station_current - 1 : @station_current
+  end
+
+  def next_station
+    @station_current + 1 <= @route.size - 1 ? station_current + 1 : @station_current
+  end
+
 end
