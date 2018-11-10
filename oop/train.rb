@@ -1,6 +1,7 @@
 
 class Train  
-  attr_accessor :route, :speed_current, :carriage_count, :station_current
+  attr_accessor :route, :forward
+  attr_reader : :speed_current, :carriage_count, :station_current
  
   def initialize(type, carriage_count)
     @type = type
@@ -8,6 +9,7 @@ class Train
     @speed_current = 0          
     @station_current   
     @route
+    @forward = true
   end
 
   def speed_up(speed)
@@ -16,72 +18,65 @@ class Train
 
   def speed_down(speed)
     @speed_current -= speed
+    @speed_current > 0 ? @speed_current : 0
   end
 
-  def carriage_change(operation)
-    if @speed_current == 0
-      if operation == "add"
-        @carriage_count += 1
-      elsif operation == "delete"
-        @carriage_count -= 1
-      end
-    end
+  def carriage_add
+    @carriage_count += 1 if @speed_current == 0       
+  end
+
+  def carriage_delete
+    @carriage_count -= 1 if @speed_current == 0
+    @carriage_count > 0 ? @carriage_count : 0    
   end
  
-  def change_station(route)   
+  def train_forward  
     if @station_current.nil?
-      @station_current = route.station_first
-    elsif @station_current == route.station_last
-      #return station_current
+      @station_current = 0
+    elsif @station_current == @route.size - 1    
 
-    elsif @station_current == route.station_first
-      if route.stations.any?
-        @station_current = route.stations.first
-      else
-        @station_current = route.station_last
-      end
     else
-      if @station_current == route.stations.last
-        @station_current = route.station_last
-      elsif  route.stations.any?
-        @station_current = route[route.index(@station_current) +1]
+        @station_current += 1
       end
     end
   end
 
-  def show_stations(route)  
+  def train_backward  
     if @station_current.nil?
-      puts "Текущая станция не установлена, показ следующей станции невозможен."
-    else
-      puts "Текущая станция: #{@station_current.name}"
-    end
+      @station_current = @route.size - 1 
+    elsif @station_current == 0      
 
-    if @station_current == route.station_first
-      puts "Это начальная станция. Предыдущая станция отсутствует"
-      if route.stations.any?        
-        puts "Следующая станция: #{route.stations.first.name}"        
-      else
-        puts "Следующая станция: #{route.station_last.name}"
-      end
-    elsif @station_current == route.station_last    
-      if route.stations.any?  
-        puts "Предыдущая станция: #{route.stations.last.name}"
-      else
-        puts "Предыдущая станция: #{route.stations.first.name}"
-      end
-      puts "Это конечная станция. Следующая станция отсутствует"
-    else
-      if @station_current == route.stations.last
-        puts "Предыдущая станция: #{route.stations[-2].name}"
-        puts "Следующая станция: #{route.station_last.name}"
-      elsif @station_current == route.stations.first
-        puts "Предыдущая станция: #{route.station_first.name}"
-        puts "Следующая станция: #{route.stations[1].name}"
-      elsif  route.stations.any?
-        @station_current = route[route.index(@station_current) +1]
-        puts "Предыдущая станция: #{route[route.index(@station_current) -1].name}"
-        puts "Следующая станция: #{route[route.index(@station_current) +1].name}"
-      end
+    else 
+      @station_current -=1      
     end
   end
+
+  def train_move
+    if @forward 
+      train_forward
+    else
+      train_backward
+    end
+  end
+
+  def station_now
+    @stations[@station_current]
+  end
+
+  def station_before
+    if @forward 
+      return @station_current - 1 >= 0 ? station_current - 1 : @station_current
+    else
+      return @station_current + 1 <= @stations.size - 1 ? station_current + 1 : @station_current
+    end
+  end
+
+  def station_next
+    if @forward 
+      return @station_current + 1 <= @stations.size - 1 ? station_current + 1 : @station_current
+    else
+      return @station_current - 1 >= 0 ? station_current - 1 : @station_current
+    end
+  end 
+  
 end
