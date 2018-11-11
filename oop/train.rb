@@ -3,7 +3,7 @@ class Train
   attr_reader :speed_current, :number, :carriage_count, :station_current, :route
 
   def initialize(number, type, carriage_count)
-    @number = number
+    @number = number >= 0 ? number : 0
     @type = type
     @carriage_count = carriage_count
     @speed_current = 0
@@ -15,7 +15,7 @@ class Train
 
   def speed_down(speed)
     @speed_current -= speed
-    @speed_current > 0 ? @speed_current : 0
+    @speed_current = @speed_current > 0 ? @speed_current : 0
   end
 
   def carriage_add
@@ -23,8 +23,7 @@ class Train
   end
 
   def carriage_delete
-    @carriage_count -= 1 if @speed_current == 0
-    @carriage_count > 0 ? @carriage_count : 0
+    @carriage_count -= 1 if @speed_current == 0 && @carriage_count > 0
   end
 
   def forward
