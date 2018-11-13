@@ -3,7 +3,7 @@ class RailwayStation
 
   def initialize(name)
     @name = name
-    @trains =[]
+    @trains = []
   end
 
   def trains_at_station(type = nil)
