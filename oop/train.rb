@@ -1,5 +1,5 @@
 class Train
-  attr_reader :speed_current, :number, :station_current, :route
+  attr_reader :speed_current, :number, :station_current, :route, :carriages
 
   def initialize(number)
     @number = number >= 0 ? number : 0
@@ -18,7 +18,7 @@ class Train
     @speed_current = @speed_current > 0 ? @speed_current : 0
   end
 
-  def carriage_add(arriage)
+  def carriage_add(carriage)
     @carriages.push(carriage) if @speed_current == 0
   end
 
@@ -27,21 +27,27 @@ class Train
   end
 
   def forward
-    return if @station_current == @route.size - 1
+    return if @station_current == @route.stations.size - 1
     if @station_current.nil?
       @station_current = 0
     else
       @station_current += 1
     end
+    #puts "@station_current "+@station_current.to_s
+    @route.stations[@station_current].train_arrives_station(self)
+    @route.stations[@station_current-1].train_leaves_station(self)
   end
 
   def backward
     return if @station_current == 0
     if @station_current.nil?
-      @station_current = @route.size - 1
+      @station_current = @route.stations.size - 1
     else
       @station_current -=1
     end
+    #puts "@station_current "+@station_current.to_s
+    @route.stations[@station_current].train_arrives_station(self)
+    @route.stations[@station_current+1].train_leaves_station(self)
   end
 
   def set_route(route)
@@ -58,7 +64,7 @@ class Train
   end
 
   def next_station
-    @station_current + 1 <= @route.size - 1 ? station_current + 1 : @station_current
+    @station_current + 1 <= @route.stations.size - 1 ? station_current + 1 : @station_current
   end
 
 end
