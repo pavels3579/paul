@@ -71,7 +71,7 @@ class Controller
     trains.each do |train|
       return train if train.number == train_number
     end
-    return nil
+    nil
   end
 
   def find_carriage(carriage_number, type)
@@ -80,14 +80,14 @@ class Controller
     carriages.each do |carriage|
       return carriage if carriage.number == carriage_number
     end
-    return nil
+    nil
   end
 
   def find_train_carriage_by_number(train, carriage_number)
     train.carriages.each do |carriage|
       return carriage if carriage.number == carriage_number
     end
-    return nil
+    nil
   end
 
   def show_stations
