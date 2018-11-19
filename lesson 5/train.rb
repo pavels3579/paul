@@ -1,5 +1,17 @@
 class Train
+  include Company
+  include InstanceCounter
+
   attr_reader :speed_current, :number, :station_current, :route, :carriages
+
+  @@stations = []
+
+  def self.find(train_number)
+    @@trains.each do |train|
+      return train if train.number == train_number
+    end
+    nil
+  end
 
   def initialize(number)
     @number = number >= 0 ? number : 0
@@ -7,6 +19,8 @@ class Train
     @carriages = []
     @route
     @station_current
+    @@trains << self
+    register_instance
   end
 
   def speed_up(speed)

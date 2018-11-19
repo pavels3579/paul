@@ -1,4 +1,6 @@
 class Carriage
+  include Company
+
   attr_reader :number
   def initialize(number)
     @number = number

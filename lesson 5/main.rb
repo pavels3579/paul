@@ -10,5 +10,8 @@ require_relative 'railway_station'
 require_relative 'controller'
 #require_relative 'seed'
 
+require_relative 'company'
+require_relative 'instance_counter'
+
 controller = Controller.new
 controller.run
