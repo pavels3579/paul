@@ -1,5 +1,5 @@
-module InstanceCounterbase)
-  @@instances = 0
+module InstanceCounter
+  #@instances = 0
 
   def self.included(base)
     base.extend ClassMethods
@@ -7,16 +7,16 @@ module InstanceCounterbase)
   end
 
   module ClassMethods
-    def instances
-      @@instances
-    end
+    attr_reader :instances
   end
 
-  protected
-
   module InstanceMethods
+
+    protected
+
     def register_instance
-      @@instances +=1
+      @instances ||= 0
+      @instances += 1
     end
   end
 

@@ -4,13 +4,10 @@ class Train
 
   attr_reader :speed_current, :number, :station_current, :route, :carriages
 
-  @@stations = []
+  @@trains = {}
 
   def self.find(train_number)
-    @@trains.each do |train|
-      return train if train.number == train_number
-    end
-    nil
+    @@trains[train_number]
   end
 
   def initialize(number)
@@ -19,7 +16,7 @@ class Train
     @carriages = []
     @route
     @station_current
-    @@trains << self
+    @@trains[@number] = self
     register_instance
   end
 
