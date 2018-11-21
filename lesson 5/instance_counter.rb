@@ -8,6 +8,13 @@ module InstanceCounter
 
   module ClassMethods
     attr_reader :instances
+
+    private
+
+    def plus_counter
+      @instances ||= 0
+      @instances += 1
+    end
   end
 
   module InstanceMethods
@@ -15,9 +22,7 @@ module InstanceCounter
     protected
 
     def register_instance
-      @instances ||= 0
-      @instances += 1
+      self.class.send :plus_counter
     end
   end
-
 end
