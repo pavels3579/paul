@@ -1,7 +1,5 @@
 class Controller
 
-  NUMBER_TRAIN_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i
-
   def initialize
     @trains = []
     @carriages = []
@@ -52,21 +50,6 @@ class Controller
   end
 
   protected
-
-  def validate_nunber_train!(number)
-    raise "Номер не соответствует формату" if @number !~ NUMBER_FORMAT
-  end
-
-  def validate_nunber_train?(number)
-    validate_nunber_train!(number)
-    true
-  rescue
-    false
-  end
-
-  def show_error_train_number
-    puts "Номер не соответствует формату"
-  end
 
   def find_station_by_name(station_name)
     @stations.each do [station]
@@ -163,14 +146,19 @@ class Controller
   end
 
   def create_station
-    puts "Введите наименование станции"
-    station_name = gets.chomp
-    if station_name.empty?
-      puts "Наименование станции не может быть пустым. Станция не была создана"
-    else
-      station = RailwayStation.new(station_name)
-      @stations.push(station)
-      puts "Станция #{station_name} была создана"
+    begin
+      puts "Введите наименование станции"
+      station_name = gets.chomp
+      if station_name.empty?
+        puts "Наименование станции не может быть пустым. Станция не была создана"
+      else
+        station = RailwayStation.new(station_name)
+        @stations.push(station)
+        puts "Станция #{station_name} была создана"
+      end
+    rescue RuntimeError => e
+      puts e.message
+      retry
     end
   end
 
@@ -181,23 +169,19 @@ class Controller
     begin
       puts "Введите номер поезда"
       train_number = gets.chomp
-      if !validate_nunber_train?(train_number)
-        raise "Не верный ввод"
-        rescue
-          show_error_train_number
-        retry
 
-        end
-    end
-
-    if type_number == "1"
-      train = PassengerTrain.new(train_number)
-      @trains.push(train)
-    elsif type_number == "2"
-      train = CargoTrain.new(train_number)
-      @trains.push(train)
-    else
-      puts "Вы не нажали ни 1 ни 2, поезд не был создан"
+      if type_number == "1"
+        train = PassengerTrain.new(train_number)
+        @trains.push(train)
+      elsif type_number == "2"
+        train = CargoTrain.new(train_number)
+        @trains.push(train)
+      else
+        puts "Вы не нажали ни 1 ни 2, поезд не был создан"
+      end
+    rescue RuntimeError => e
+      puts e.message
+      retry
     end
 
     if train
@@ -206,22 +190,55 @@ class Controller
     end
   end
 
+  def create_carriage
+    puts "Нажмите 1 - для создания пассажирского вагона, 2 - грузового"
+    type_number = gets.chomp
+
+    begin
+      puts "Введите номер вагона"
+      carriage_number = gets.chomp
+
+      if type_number == "1"
+        carriage = PassengerCarriage.new(carriage_number)
+        @carriages.push(carriage)
+      elsif type_number == "2"
+        carriage = CargoCarriage.new(carriage_number)
+        @carriages.push(carriage)
+      else
+        puts "Вы не нажали ни 1 ни 2, вагон не был создан"
+      end
+    rescue RuntimeError => e
+      puts e.message
+      retry
+    end
+
+    if carriage
+      print type_number == "1" ? "Пассажирский " : "Грузовой "
+      puts "вагон номер #{carriage_number} был создан"
+    end
+  end
+
   def manage_route
     puts "Нажмите 1 - для создания маршрута, 2 - для добавления станции в маршрут, 3 - для удаления станции из маршрута"
     choice_route = gets.chomp
     case choice_route
     when "1"
-      show_stations
+      begin
+        show_stations
 
-      puts "Введите номер начальной станции"
-      first_station_number = gets.chomp
-      first_station = find_station_by_number(first_station_number)
+        puts "Введите номер начальной станции"
+        first_station_number = gets.chomp
+        first_station = find_station_by_number(first_station_number)
 
-      puts "Введите номер конечной станции"
-      last_station_number = gets.chomp
-      last_station = find_station_by_number(last_station_number)
+        puts "Введите номер конечной станции"
+        last_station_number = gets.chomp
+        last_station = find_station_by_number(last_station_number)
 
-      route = Route.new(first_station, last_station)
+        route = Route.new(first_station, last_station)
+      rescue RuntimeError => e
+        puts e.message
+        retry
+      end
       @routes.push(route)
       puts "Маршрут #{route.stations.first.name} - #{route.stations.last.name} был создан"
     when "2"
@@ -269,7 +286,7 @@ class Controller
     end
 
     puts "Введите номер поезда"
-    train_number = gets.to_i
+    train_number = gets.chomp
 
     train_type = nil
     if type_number == "1"
@@ -298,29 +315,6 @@ class Controller
     end
   end
 
-  def create_carriage
-    puts "Нажмите 1 - для создания пассажирского вагона, 2 - грузового"
-    type_number = gets.chomp
-
-    puts "Введите номер вагона"
-    carriage_number = gets.to_i
-
-    if type_number == "1"
-      carriage = PassengerCarriage.new(carriage_number)
-      @carriages.push(carriage)
-    elsif type_number == "2"
-      carriage = CargoCarriage.new(carriage_number)
-      @carriages.push(carriage)
-    else
-      puts "Вы не нажали ни 1 ни 2, вагон не был создан"
-    end
-
-    if carriage
-      print type_number == "1" ? "Пассажирский " : "Грузовой "
-      puts "вагон номер #{carriage_number} был создан"
-    end
-  end
-
   def add_carriage_to_train
     puts "Нажмите 1 - для добавления вагона к пассажирскому поезду, 2 - грузовому"
     type_number = gets.chomp
@@ -335,7 +329,7 @@ class Controller
     end
 
     puts "Введите номер поезда"
-    train_number = gets.to_i
+    train_number = gets.chomp
 
     if type_number == "1"
       train = find_train(train_number, PassengerTrain)
@@ -355,7 +349,7 @@ class Controller
     end
 
     puts "Введите номер вагона"
-    carriage_number = gets.to_i
+    carriage_number = gets.chomp
     if type_number == "1"
       carriage = find_carriage(carriage_number, PassengerCarriage)
     elsif type_number == "2"
@@ -384,7 +378,7 @@ class Controller
     end
 
     puts "Введите номер поезда"
-    train_number = gets.to_i
+    train_number = gets.chomp
 
     if type_number == "1"
       train = find_train(train_number, PassengerTrain)
@@ -397,7 +391,7 @@ class Controller
     show_train_carriages(train)
 
     puts "Введите номер вагона"
-    carriage_number = gets.to_i
+    carriage_number = gets.chomp
     carriage = find_train_carriage_by_number(train, carriage_number)
 
     if carriage
@@ -422,7 +416,7 @@ class Controller
     end
 
     puts "Введите номер поезда"
-    train_number = gets.to_i
+    train_number = gets.chomp
 
     if type_number == "1"
       train = find_train(train_number, PassengerTrain)

@@ -5,6 +5,7 @@ class Route
 
   def initialize(first_station, last_station)
     @stations = []
+    validate!(first_station, last_station)
     @stations.push(first_station)
     @stations.push(last_station)
     register_instance
@@ -16,5 +17,9 @@ class Route
 
   def station_delete(station)
     @stations.delete(station) if @stations.first != station && @stations.last != station
+  end
+
+  def validate!(first_station, last_station)
+    raise "Нельзя маршруту назначить пустую станцию" if first_station.nil? || last_station.nil?
   end
 end

@@ -1,5 +1,6 @@
 class RailwayStation
   include InstanceCounter
+  include Validation
 
   attr_reader :name, :trains
 
@@ -9,8 +10,13 @@ class RailwayStation
     @@stations
   end
 
+  def validate!
+    raise "Название станции не может быть менее 3 символово" if @name.length < 3
+  end
+
   def initialize(name)
     @name = name
+    validate!
     @trains = []
     @@stations.push(self)
     register_instance

@@ -1,6 +1,9 @@
 class Train
   include Company
   include InstanceCounter
+  include Validation
+
+  NUMBER_TRAIN_FORMAT = /^[а-я0-9]{3}-?[а-я0-9]{2}$/i
 
   attr_reader :speed_current, :number, :station_current, :route, :carriages
 
@@ -10,8 +13,13 @@ class Train
     @@trains[train_number.to_sym]
   end
 
+  def validate!
+    raise "Номер не соответствует формату" if @number !~ NUMBER_TRAIN_FORMAT
+  end
+
   def initialize(number)
     @number = number
+    validate!
 
     @speed_current = 0
     @carriages = []

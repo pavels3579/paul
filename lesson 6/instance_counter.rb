@@ -1,5 +1,4 @@
 module InstanceCounter
-  #@instances = 0
 
   def self.included(base)
     base.extend ClassMethods
@@ -9,7 +8,7 @@ module InstanceCounter
   module ClassMethods
     attr_reader :instances
 
-    #private
+    private
 
     def plus_counter
       @instances ||= 0
@@ -22,8 +21,8 @@ module InstanceCounter
     protected
 
     def register_instance
-      #self.class.send :plus_counter
-      self.class.plus_counter
+      self.class.send :plus_counter
+      #self.class.plus_counter
     end
   end
 end
