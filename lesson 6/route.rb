@@ -3,14 +3,6 @@ class Route
 
   attr_reader :stations
 
-  private
-
-  def validate!(first_station, last_station)
-    raise "Нельзя маршруту назначить пустую станцию" if first_station.nil? || last_station.nil?
-  end
-
-  public
-
   def initialize(first_station, last_station)
     @stations = []
     validate!(first_station, last_station)
@@ -25,5 +17,11 @@ class Route
 
   def station_delete(station)
     @stations.delete(station) if @stations.first != station && @stations.last != station
+  end
+
+  private
+
+  def validate!(first_station, last_station)
+    raise "Нельзя маршруту назначить пустую станцию" if first_station.nil? || last_station.nil?
   end
 end

@@ -7,16 +7,14 @@ class Carriage
 
   attr_reader :number
 
+  def initialize(number)
+    @number = number
+    validate!
+  end
+
   private
 
   def validate!
     raise "Номер не соответствует формату" if @number !~ NUMBER_CARRIAGE_FORMAT
-  end
-
-  public
-
-  def initialize(number)
-    @number = number
-    validate!
   end
 end

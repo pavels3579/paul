@@ -9,14 +9,6 @@ class Train
 
   @@trains = {}
 
-  private
-
-  def validate!
-    raise "Номер не соответствует формату" if @number !~ NUMBER_TRAIN_FORMAT
-  end
-
-  public
-
   def self.find(train_number)
     @@trains[train_number.to_sym]
   end
@@ -90,4 +82,9 @@ class Train
     @station_current + 1 <= @route.stations.size - 1 ? station_current + 1 : @station_current
   end
 
+  private
+
+  def validate!
+    raise "Номер не соответствует формату" if @number !~ NUMBER_TRAIN_FORMAT
+  end
 end
