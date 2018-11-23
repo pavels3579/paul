@@ -9,12 +9,16 @@ class Train
 
   @@trains = {}
 
-  def self.find(train_number)
-    @@trains[train_number.to_sym]
-  end
+  private
 
   def validate!
     raise "Номер не соответствует формату" if @number !~ NUMBER_TRAIN_FORMAT
+  end
+
+  public
+
+  def self.find(train_number)
+    @@trains[train_number.to_sym]
   end
 
   def initialize(number)
@@ -39,7 +43,7 @@ class Train
   end
 
   def carriage_add(carriage)
-    @carriages.push(carriage) if @speed_current == 0
+    @carriages << carriage if @speed_current == 0
   end
 
   def carriage_delete(carriage)

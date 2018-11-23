@@ -10,15 +10,19 @@ class RailwayStation
     @@stations
   end
 
+  private
+
   def validate!
-    raise "Название станции не может быть менее 3 символово" if @name.length < 3
+    raise "Название станции не может быть менее 3 символов" if @name.length < 3
   end
+
+  public
 
   def initialize(name)
     @name = name
     validate!
     @trains = []
-    @@stations.push(self)
+    @@stations << self
     register_instance
   end
 
@@ -35,6 +39,6 @@ class RailwayStation
   end
 
   def train_arrives_station(train)
-    @trains.push(train)
+    @trains << train
   end
 end

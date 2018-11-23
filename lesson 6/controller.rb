@@ -153,7 +153,7 @@ class Controller
         puts "Наименование станции не может быть пустым. Станция не была создана"
       else
         station = RailwayStation.new(station_name)
-        @stations.push(station)
+        @stations << station
         puts "Станция #{station_name} была создана"
       end
     rescue RuntimeError => e
@@ -172,10 +172,10 @@ class Controller
 
       if type_number == "1"
         train = PassengerTrain.new(train_number)
-        @trains.push(train)
+        @trains << train
       elsif type_number == "2"
         train = CargoTrain.new(train_number)
-        @trains.push(train)
+        @trains << train
       else
         puts "Вы не нажали ни 1 ни 2, поезд не был создан"
       end
@@ -200,10 +200,10 @@ class Controller
 
       if type_number == "1"
         carriage = PassengerCarriage.new(carriage_number)
-        @carriages.push(carriage)
+        @carriages << carriage
       elsif type_number == "2"
         carriage = CargoCarriage.new(carriage_number)
-        @carriages.push(carriage)
+        @carriages << carriage
       else
         puts "Вы не нажали ни 1 ни 2, вагон не был создан"
       end
@@ -239,7 +239,7 @@ class Controller
         puts e.message
         retry
       end
-      @routes.push(route)
+      @routes << route
       puts "Маршрут #{route.stations.first.name} - #{route.stations.last.name} был создан"
     when "2"
       show_routes
