@@ -19,10 +19,10 @@ class RailwayStation
   end
 
   def trains_at_station(type = nil)
-    if type.nil?
-      return @trains
-    else
+    if type
       @trains.select {|train| train.type == type}
+    else
+      @trains
     end
   end
 
@@ -36,7 +36,7 @@ class RailwayStation
 
   def stations_trains(&block)
     trains.each do |train|
-      block.call(train)
+      yield.call(train)
     end
   end
 
