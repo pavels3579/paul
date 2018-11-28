@@ -31,7 +31,7 @@ class Train
 
   def speed_down(speed)
     @speed_current -= speed
-    @speed_current = @speed_current > 0 ? @speed_current : 0
+    @speed_current = @speed_current.positive? ? @speed_current : 0
   end
 
   def carriage_add(carriage)

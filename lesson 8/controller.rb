@@ -242,9 +242,10 @@ class Controller
       retry
     end
 
-    if train
-      print type_number == '1' ? 'Пассажирский ' : 'Грузовой '
-      puts "поезд номер #{train_number} был создан"
+    return unless train
+
+    print type_number == '1' ? 'Пассажирский ' : 'Грузовой '
+    puts "поезд номер #{train_number} был создан"
     end
   end
 
@@ -278,10 +279,10 @@ class Controller
       retry
     end
 
-    if carriage
-      print type_number == '1' ? 'Пассажирский ' : 'Грузовой '
-      puts "вагон номер #{carriage_number} был создан"
-    end
+    return unless carriage
+
+    print type_number == '1' ? 'Пассажирский ' : 'Грузовой '
+    puts "вагон номер #{carriage_number} был создан"
   end
 
   def manage_route
