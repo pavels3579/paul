@@ -1,0 +1,1 @@
+CargoTrain = Class.new(Train)
