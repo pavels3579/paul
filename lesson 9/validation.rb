@@ -1,33 +1,47 @@
 module Validation
-  def valid?
-    validate!
-  rescue RuntimeError
-    false
+  def self.included(base)
+    base.extend ClassMethods
+    base.send :include, InstanceMethods
   end
 
-  class Validate
+  module ClassMethods
+    def validate(arg_name, type, arguments = {})
+      @validates ||= {}
+      @validates[arg_name] = arg_name
+      @validates[type] = type
+      @validates[arguments] = arguments
+    end
+  end
 
-    def valid_presence(name)
-      !name.nil && !name.empty? || raise "it's can't be nil or empty"
+  module InstanceMethods
+    def validate!
+      arg_name = instance_variable_get("@#{self.class.validates[arg_name]}")
+      type = instance_variable_get("#{self.class.validates[type]}")
+      arguments = instance_variable_get("#{self.class.validates[arguments]}")
+
+      send("valid_#{type}", arg_name, *arguments)
     end
 
-    def valid_format(name,format)
-      mane =~ format || raise "it's not format needed"
+    def valid?
+      validate!
+    rescue RuntimeError
+      false
     end
 
-    def valid_type(name,class_type)
-      name.class == class_type || raise "it's not the same class type"
+    protected
+
+    def valid_presence(arg_name)
+      raise "it's can't be nil or empty" if !arg_name.nil && !arg_name.empty?
     end
 
-    def validate(name. format = nil, class_type = nil)
-      if fopmat.nil? && class_type_nil?
-        valid_presence(name)
-      elsif !format.nil?
-        valid_format(name,format)
-      elsif !class_type_nil?
-        valid_type(name,class_type)
-      end
+    def valid_format(arg_name, format)
+      raise "it's not format needed" if arg_name =~ format
+    end
+
+    def valid_type(name, class_type)
+      raise "it's not the same class type" if name.class == class_type
     end
 
   end
 end
+

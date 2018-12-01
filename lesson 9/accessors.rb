@@ -34,5 +34,4 @@ module Accessors
       instance_variable_get("#{name}_history".to_sym)
     end
   end
-
 end

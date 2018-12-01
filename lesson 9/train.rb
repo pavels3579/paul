@@ -7,6 +7,9 @@ class Train
 
   attr_reader :speed_current, :number, :station_current, :route, :carriages
 
+  validate :number, :presence
+  validate :number, :format, NUMBER_TRAIN_FORMAT
+
   @@trains = {}
 
   def self.find(train_number)
@@ -89,9 +92,9 @@ class Train
     end
   end
 
-  private
+  # private
 
-  def validate!
-    raise 'Номер не соответствует формату' if @number !~ NUMBER_TRAIN_FORMAT
-  end
+  # def validate!
+  #  raise 'Номер не соответствует формату' if @number !~ NUMBER_TRAIN_FORMAT
+  # end
 end
