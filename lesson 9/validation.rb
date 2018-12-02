@@ -6,24 +6,24 @@ module Validation
 
   module ClassMethods
     def validate(arg_name, type, arguments = {})
-      @validates ||= {}
-      @validates[arg_name] = arg_name
-      @validates[type] = type
-      @validates[arguments] = arguments
+      @validates ||= []
+      @validates << { arg_name: arg_name, type: type, arguments: arguments }
     end
   end
 
   module InstanceMethods
-    def validate!
-      arg_name = instance_variable_get("@#{self.class.validates[arg_name]}")
-      type = instance_variable_get("#{self.class.validates[type]}")
-      arguments = instance_variable_get("#{self.class.validates[arguments]}")
+    attr_reader :validates
 
-      send("valid_#{type}", arg_name, *arguments)
+    def validate!
+      self.class.validates.each do |validation|
+        arg_name = instance_variable_get("@#{validation[:arg_name]}")
+        send("valid_#{validation[:type]}", arg_name, *validation[:arguments])
+      end
     end
 
     def valid?
       validate!
+      true
     rescue RuntimeError
       false
     end
@@ -31,15 +31,15 @@ module Validation
     protected
 
     def valid_presence(arg_name)
-      raise "it's can't be nil or empty" if !arg_name.nil && !arg_name.empty?
+      raise "it's can't be nil or empty" if arg_name.nil? || arg_name.empty?
     end
 
     def valid_format(arg_name, format)
-      raise "it's not format needed" if arg_name =~ format
+      raise "it's not format needed" if arg_name !~ format
     end
 
-    def valid_type(name, class_type)
-      raise "it's not the same class type" if name.class == class_type
+    def valid_type(arg_name, class_type)
+      raise "it's not the same class type" unless arg_name.class.is_a? class_type
     end
 
   end

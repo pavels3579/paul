@@ -246,7 +246,6 @@ class Controller
 
     print type_number == '1' ? 'Пассажирский ' : 'Грузовой '
     puts "поезд номер #{train_number} был создан"
-    end
   end
 
   def create_carriage
