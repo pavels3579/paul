@@ -2,6 +2,11 @@ class RailwayStation
   include InstanceCounter
   include Validation
 
+  NAME_STATION_FORMAT = /^[a-zа-я0-9]{3,}$/i
+
+  validate :name, :presence
+  validate :name, :format, NAME_STATION_FORMAT
+
   attr_reader :name, :trains
 
   @@stations = []
@@ -38,11 +43,5 @@ class RailwayStation
     trains.each do |train|
       yield.call(train)
     end
-  end
-
-  private
-
-  def validate!
-    raise 'Название станции не может быть менее 3 символов' if @name.length < 3
   end
 end

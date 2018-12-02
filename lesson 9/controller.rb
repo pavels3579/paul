@@ -205,14 +205,9 @@ class Controller
   def create_station
     puts 'Введите наименование станции'
     station_name = gets.chomp
-    if station_name.empty?
-      puts 'Наименование станции не может быть пустым.'
-      puts 'Станция не была создана'
-    else
-      station = RailwayStation.new(station_name)
-      @stations << station
-      puts "Станция #{station_name} была создана"
-    end
+    station = RailwayStation.new(station_name)
+    @stations << station
+    puts "Станция #{station_name} была создана"
   rescue RuntimeError => e
     puts e.message
     retry
