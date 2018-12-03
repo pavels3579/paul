@@ -6,6 +6,7 @@ class RailwayStation
 
   validate :name, :presence
   validate :name, :format, NAME_STATION_FORMAT
+  # validate :name, :type, Fixnum
 
   attr_reader :name, :trains
 

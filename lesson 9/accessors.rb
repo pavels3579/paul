@@ -9,12 +9,18 @@ module Accessors
         var_name = "@#{name}".to_sym
         name_history = "@#{name}_history".to_sym
 
-        instance_variable_set(name_history, []) if instance_variable_get(name_history).nil?
-
         define_method(name) { instance_variable_get(var_name) }
         define_method("#{name}=".to_sym) do |value|
+          if instance_variable_get(name_history).nil?
+            instance_variable_set(name_history, [])
+          else
+            instance_variable_get(name_history) << instance_variable_get(var_name)
+          end
           instance_variable_set(var_name, value)
-          instance_variable_get(name_history) << value
+        end
+
+        define_method("#{name}_history") do
+          instance_variable_get("#{name}_history".to_sym)
         end
       end
     end
@@ -24,16 +30,9 @@ module Accessors
       define_method(attr_name) { instance_variable_get(var_name) }
 
       define_method("#{attr_name}=".to_sym) do |value|
-        if value.is_a? attr_class
-          instance_variable_set(var_name, value)
-        else
-          raise "It's not the same type as attr_class"
-        end
+        raise "It's not the same type as attr_class" unless value.is_a? attr_class
+        instance_variable_set(var_name, value)
       end
-    end
-
-    define_method("#{name}_history") do
-      instance_variable_get("#{name}_history".to_sym)
     end
   end
 end
