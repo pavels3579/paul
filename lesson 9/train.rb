@@ -9,6 +9,7 @@ class Train
   attr_reader :speed_current, :number, :station_current, :route, :carriages
 
   attr_accessor_with_history :nameq, :another
+  strong_attr_accessor :name, String
 
   validate :number, :presence
   validate :number, :format, NUMBER_TRAIN_FORMAT
