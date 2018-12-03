@@ -20,7 +20,7 @@ module Accessors
         end
 
         define_method("#{name}_history") do
-          instance_variable_get("#{name}_history".to_sym)
+          instance_variable_get("@#{name}_history".to_sym)
         end
       end
     end

@@ -2,10 +2,13 @@ class Train
   include Company
   include InstanceCounter
   include Validation
+  include Accessors
 
   NUMBER_TRAIN_FORMAT = /^[a-zа-я0-9]{3}-?[a-zа-я0-9]{2}$/i.freeze
 
   attr_reader :speed_current, :number, :station_current, :route, :carriages
+
+  attr_accessor_with_history :nameq, :another
 
   validate :number, :presence
   validate :number, :format, NUMBER_TRAIN_FORMAT

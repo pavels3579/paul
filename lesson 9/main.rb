@@ -1,6 +1,7 @@
 require_relative 'company'
 require_relative 'instance_counter'
 require_relative 'validation'
+require_relative 'accessors'
 
 require_relative 'train'
 require_relative 'passenger_train'
