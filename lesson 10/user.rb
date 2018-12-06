@@ -3,7 +3,6 @@ class User < Gamer
 
   def initialize(name)
     @name = name
-    super
+    super()
   end
-
 end
