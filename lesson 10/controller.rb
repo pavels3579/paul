@@ -38,7 +38,7 @@ class Controller
       when '3'
         open_cards
       else
-        puts 'You input wrong number'
+        puts 'You inputed wrong number'
       end
     end
   end
@@ -46,7 +46,7 @@ class Controller
   def take_card(gamer)
     loop do
       card = @deck.cards.keys[rand(@deck.cards.size)]
-      unless @user.used_cards.include?(card) && @dealer.used_cards.include?(card)
+      unless @user.used_cards.include?(card) || @dealer.used_cards.include?(card)
         gamer.used_cards << card
         break
       end
