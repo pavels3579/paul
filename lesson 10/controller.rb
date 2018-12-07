@@ -74,13 +74,11 @@ class Controller
       count += @deck.cards[card]
     end
 
-    return count if count > 21
+    return count if count <= 21
 
     gamer.used_cards.each do |card|
-      if count > 21 && deck.alternative_cards[card]
-        count = count - deck.cards[card] + deck.alternative_cards[card]
-      else
-        return count
+      if count > 21 && @deck.alternative_cards[card]
+        count = count - @deck.cards[card] + @deck.alternative_cards[card]
       end
     end
     count
