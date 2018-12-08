@@ -1,7 +1,8 @@
 class Controller
   def run
-    puts 'Input your name'
-    name = gets.chomp
+    @view = View.new
+
+    name = @view.input_name
 
     @user = User.new(name)
     @dealer = Dealer.new
@@ -24,11 +25,7 @@ class Controller
     show_cards
 
     loop do
-      puts '1.  Miss'
-      puts '2.  Take card'
-      puts '3.  Оpen cards'
-
-      choice = gets.chomp
+      choice = @view.input_action
 
       case choice
       when '1'
@@ -45,7 +42,7 @@ class Controller
 
   def take_card(gamer)
     loop do
-      card = @deck.cards.keys[rand(@deck.cards.size)]
+      card = @deck.cards[rand(@deck.cards.size)]
       unless @user.used_cards.include?(card) || @dealer.used_cards.include?(card)
         gamer.used_cards << card
         break
@@ -53,14 +50,23 @@ class Controller
     end
   end
 
-  def show_cards
-    puts "#{@user.name} cards (#{count_points(@user)} points): "
-    @user.used_cards.each { |card| print "#{card} " }
-    puts ''
 
-    puts 'dealer cards: '
-    @dealer.used_cards.each { |_card| print '* ' }
-    puts ''
+  def show_cards
+    #puts "#{@user.name} cards (#{count_points(@user)} points): "
+    #@user.used_cards.each { |card| print "#{card.name}#{card.suit} " }
+    #puts ''
+
+    #puts 'dealer cards: '
+    #@dealer.used_cards.each { |_card| print '* ' }
+    #puts ''
+
+    @view.show_title_user_cards(@user, count_points(@user))
+    @user.used_cards.each { |card| @view.show_card(card) }
+    @view.show_empty_string
+
+    @view.show_title_dealer_cards
+    @dealer.used_cards.each { |card| @view.show_dealer_skipped_card }
+    @view.show_empty_string
   end
 
   def show_money
@@ -71,13 +77,13 @@ class Controller
   def count_points(gamer)
     count = 0
     gamer.used_cards.each do |card|
-      count += @deck.cards[card]
+      count += card.points
     end
 
     return count if count <= 21
 
     gamer.used_cards.each do |card|
-      count = count - @deck.cards[card] + @deck.alternative_cards[card] if count > 21 && @deck.alternative_cards[card]
+      count = count - card.points + card.other_points if count > 21 && !card.other_points.nil?
     end
     count
   end
@@ -101,11 +107,11 @@ class Controller
     dealer_points = count_points(@dealer)
 
     puts "#{@user.name} cards (#{user_points} points): "
-    @user.used_cards.each { |card| print "#{card} " }
+    @user.used_cards.each { |card| print "#{card.name}#{card.suit} " }
     puts ''
 
     puts "dealer cards (#{dealer_points} points): "
-    @dealer.used_cards.each { |card| print "#{card} " }
+    @dealer.used_cards.each { |card| print "#{card.name}#{card.suit} " }
     puts ''
 
     count_money(user_points, dealer_points)
