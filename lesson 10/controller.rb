@@ -35,7 +35,7 @@ class Controller
       when '3'
         open_cards
       else
-        puts 'You inputed wrong number'
+        @view.message_wrong_number
       end
     end
   end
@@ -50,28 +50,18 @@ class Controller
     end
   end
 
-
   def show_cards
-    #puts "#{@user.name} cards (#{count_points(@user)} points): "
-    #@user.used_cards.each { |card| print "#{card.name}#{card.suit} " }
-    #puts ''
-
-    #puts 'dealer cards: '
-    #@dealer.used_cards.each { |_card| print '* ' }
-    #puts ''
-
     @view.show_title_user_cards(@user, count_points(@user))
     @user.used_cards.each { |card| @view.show_card(card) }
     @view.show_empty_string
 
     @view.show_title_dealer_cards
-    @dealer.used_cards.each { |card| @view.show_dealer_skipped_card }
+    @dealer.used_cards.each { |_card| @view.show_dealer_skipped_card }
     @view.show_empty_string
   end
 
   def show_money
-    puts "#{@user.name} money #{@user.money}"
-    puts "dealer money #{@dealer.money}"
+    @view.show_money(@user, @dealer)
   end
 
   def count_points(gamer)
@@ -106,13 +96,13 @@ class Controller
     user_points = count_points(@user)
     dealer_points = count_points(@dealer)
 
-    puts "#{@user.name} cards (#{user_points} points): "
-    @user.used_cards.each { |card| print "#{card.name}#{card.suit} " }
-    puts ''
+    @view.show_title_user_cards(@user, user_points)
+    @user.used_cards.each { |card| @view.show_card(card) }
+    @view.show_empty_string
 
-    puts "dealer cards (#{dealer_points} points): "
-    @dealer.used_cards.each { |card| print "#{card.name}#{card.suit} " }
-    puts ''
+    @view.show_title_dealer_cards(dealer_points)
+    @dealer.used_cards.each { |card| @view.show_card(card) }
+    @view.show_empty_string
 
     count_money(user_points, dealer_points)
     show_money
@@ -147,8 +137,7 @@ class Controller
   end
 
   def ask_question
-    puts 'Do you want to play once again? (Y/N)'
-    choice = gets.chomp.downcase
+    choice = @view.offer_play_again
     start_game if choice == 'y'
     abort
   end

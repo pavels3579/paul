@@ -1,11 +1,7 @@
 class View
-  attr_reader :input_name, :input_action, :show_dealer_skipped_card,
-              :show_card, :show_empty_string, :show_title_dealer_cards,
-              :show_title_user_cards
-
   def input_name
     puts 'Input your name'
-    name = gets.chomp
+    gets.chomp
   end
 
   def input_action
@@ -13,25 +9,19 @@ class View
     puts '2.  Take card'
     puts '3.  Оpen cards'
 
-    choice = gets.chomp
-  end
-
-  def show_cards(user, dealer, user_points)
-    puts "#{@user.name} cards (#{user_points} points): "
-    user.used_cards.each { |card| print "#{card.name}#{card.suit} " }
-    puts ''
-
-    puts 'dealer cards: '
-    dealer.used_cards.each { |_card| print '* ' }
-    puts ''
+    gets.chomp
   end
 
   def show_title_user_cards(user, points)
     puts "#{user.name} cards (#{points} points): "
   end
 
-  def show_title_dealer_cards
-    puts 'dealer cards: '
+  def show_title_dealer_cards(points = nil)
+    if points.nil?
+      puts 'dealer cards: '
+    else
+      puts "dealer cards (#{points} points): "
+    end
   end
 
   def show_card(card)
@@ -46,4 +36,17 @@ class View
     puts ''
   end
 
+  def show_money(user, dealer)
+    puts "#{user.name} money #{user.money}"
+    puts "dealer money #{dealer.money}"
+  end
+
+  def message_wrong_number
+    puts 'You inputed wrong number'
+  end
+
+  def offer_play_again
+    puts 'Do you want to play once again? (Y/N)'
+    gets.chomp.downcase
+  end
 end
