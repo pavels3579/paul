@@ -41,13 +41,9 @@ class Controller
   end
 
   def take_card(gamer)
-    loop do
-      card = @deck.cards[rand(@deck.cards.size)]
-      unless @user.used_cards.include?(card) || @dealer.used_cards.include?(card)
-        gamer.used_cards << card
-        break
-      end
-    end
+    card = @deck.cards.last
+    gamer.used_cards << card
+    @deck.delete
   end
 
   def show_cards

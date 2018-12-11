@@ -6,7 +6,12 @@ class Deck
       Card::CARDS_POINTS.each do |name_card, points|
         other_points = Card::CARDS_OTHER_POINTS[name_card]
         card = Card.new(suit, name_card, points, other_points)
+        cards << card
       end
     end.shuffle!
+  end
+
+  def delete
+    cards.pop
   end
 end
