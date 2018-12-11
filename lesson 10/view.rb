@@ -17,10 +17,10 @@ class View
   end
 
   def show_title_dealer_cards(points = nil)
-    if points.nil?
-      puts 'dealer cards: '
-    else
+    if points
       puts "dealer cards (#{points} points): "
+    else
+      puts 'dealer cards: '
     end
   end
 

@@ -41,9 +41,7 @@ class Controller
   end
 
   def take_card(gamer)
-    card = @deck.cards.last
-    gamer.used_cards << card
-    @deck.delete
+    gamer.used_cards << @deck.delete
   end
 
   def show_cards
