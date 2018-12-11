@@ -17,7 +17,7 @@ class Controller
     @dealer.used_cards = []
     @user.money -= @bank.rate
     @dealer.money -= @bank.rate
-    @bank.bank_money += @bank.rate * 2
+    @bank.money += @bank.rate * 2
 
     2.times { take_card(@user) }
     2.times { take_card(@dealer) }
@@ -51,7 +51,7 @@ class Controller
   end
 
   def show_cards
-    @view.show_title_user_cards(@user, count_points(@user))
+    @view.show_title_user_cards(@user, @user.count_points)
     @user.used_cards.each { |card| @view.show_card(card) }
     @view.show_empty_string
 
@@ -64,22 +64,8 @@ class Controller
     @view.show_money(@user, @dealer)
   end
 
-  def count_points(gamer)
-    count = 0
-    gamer.used_cards.each do |card|
-      count += card.points
-    end
-
-    return count if count <= 21
-
-    gamer.used_cards.each do |card|
-      count = count - card.points + card.other_points if count > 21 && !card.other_points.nil?
-    end
-    count
-  end
-
   def dealer_game
-    take_card(@dealer) if count_points(@dealer) < 17
+    take_card(@dealer) if @dealer.count_points < 17
     if @user.used_cards.size == 3 || @dealer.used_cards.size == 3
       open_cards
     else
@@ -93,8 +79,8 @@ class Controller
   end
 
   def open_cards
-    user_points = count_points(@user)
-    dealer_points = count_points(@dealer)
+    user_points = @user.count_points
+    dealer_points = @dealer.count_points
 
     @view.show_title_user_cards(@user, user_points)
     @user.used_cards.each { |card| @view.show_card(card) }
@@ -114,24 +100,24 @@ class Controller
   end
 
   def bank_zero
-    @bank.bank_money = 0
+    @bank.money = 0
   end
 
   def count_money(user_points, dealer_points)
     if user_points > 21 && dealer_points > 21
-      take_money(@user, @bank.bank_money / 2)
-      take_money(@dealer, @bank.bank_money / 2)
+      take_money(@user, @bank.money / 2)
+      take_money(@dealer, @bank.money / 2)
     elsif user_points > 21 && dealer_points <= 21
-      take_money(@dealer, @bank.bank_money)
+      take_money(@dealer, @bank.money)
     elsif user_points <= 21 && dealer_points > 21
-      take_money(@user, @bank.bank_money)
+      take_money(@user, @bank.money)
     elsif user_points == dealer_points
-      take_money(@user, @bank.bank_money / 2)
-      take_money(@dealer, @bank.bank_money / 2)
+      take_money(@user, @bank.money / 2)
+      take_money(@dealer, @bank.money / 2)
     elsif user_points > dealer_points
-      take_money(@user, @bank.bank_money)
+      take_money(@user, @bank.money)
     else
-      take_money(@dealer, @bank.bank_money)
+      take_money(@dealer, @bank.money)
     end
     bank_zero
   end

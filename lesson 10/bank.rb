@@ -2,10 +2,10 @@ class Bank
   RATE = 10
 
   attr_reader :rate
-  attr_accessor :bank_money
+  attr_accessor :money
 
   def initialize
-    @bank_money = 0
+    @money = 0
     @rate = RATE
   end
 end
